@@ -11,23 +11,18 @@ const Colaboradores = (Props) => {
 
   const agregarColaborador = (e) => {
     e.preventDefault();
-    if (!nombreColaborador.trim() || !emailColaborador.trim() === "") {
+    if (!nombreColaborador.trim() || !emailColaborador.trim()) {
       alert("Debes llenar ambos campos")
   } else {
     setListaColaboradores([...listaColaboradores, {id: nanoid(), nombre: nombreColaborador, correo: emailColaborador}
     ])
   }
 };
-  //función de búsqueda
-  const buscar = (e) => {
-      Props.setBuscando(e.target.value);
-      console.log(e.target.value)
-  }
-
-
+  
 
   return (
-    <>                                                                                            <div className='container'>                                     
+    <>                                                                 
+    <div className='container'>                                     
         <form className='formulario' onSubmit={agregarColaborador}>
         
           <label>Nombre del colaborador</label>
@@ -55,10 +50,21 @@ const Colaboradores = (Props) => {
 
         <div className='lista'>
           <h1 className='titulo-lista'>Lista de Colaboradores</h1>
-            {/* {listaColaboradores.filter} */}
           <ul>
-            {listaColaboradores.map(id => <p key={id} > {id.nombre} - {id.correo} </p>)}
+            {listaColaboradores.filter((lista)=>{
+                if (Props.buscando === "") {
+                  return lista;
+                } else if (lista.nombre.toLocaleLowerCase().includes(Props.buscando.toLocaleLowerCase()) || 
+                lista.correo.toLocaleLowerCase().includes(Props.buscando.toLocaleLowerCase()) ) {
+                  return lista
+                }
+            
+              }).map(li => <p key={li} > {li.nombre} - {li.correo} - {li.id} </p>)
+            }
+            
           </ul>
+
+            {/* <button id="eliminarcolaborador" type="button" class="btn-eliminar" onclick="eliminarTarea(${elemento.id})">Eliminar</button> */}
         </div>
       </div>
     </>
